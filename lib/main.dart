@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:demo/pages/account_page.dart';
 import 'package:demo/pages/login.dart';
 import 'package:demo/pages/mainpage.dart';
-import 'package:demo/pages/profile_page.dart';
+import 'package:demo/pages/myhomepage.dart';
+import 'package:demo/pages/accountprofile_page.dart';
 import 'package:demo/pages/registerpage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: AccountPage(),
+      home: MyHomePage(),
     );
   }
 }
