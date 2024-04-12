@@ -1,6 +1,8 @@
+import 'package:demo/auth/mainpage.dart';
 import 'package:demo/pages/myhomepage.dart';
 import 'package:demo/values/app_assets.dart';
 import 'package:demo/widgets/attributeProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,8 @@ class AccountProfilePage extends StatefulWidget {
 }
 
 class _AccountProfilePageState extends State<AccountProfilePage> {
+  final user = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +50,7 @@ class _AccountProfilePageState extends State<AccountProfilePage> {
                     children: [
                       Container(
                         child: Text(
-                          "Phạm Minh Thái",
+                          user.email!,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -135,8 +139,15 @@ class _AccountProfilePageState extends State<AccountProfilePage> {
               icon: AppAssets.lock,
               attribute: "Change password",
               data: "*********",
-              onTap: goToNextPage,
-            )
+              onTap: test,
+            ),
+            TextButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Get.offAll(MainPage());
+                  return;
+                },
+                child: Text("Logout"))
           ],
         ),
       ),
@@ -146,4 +157,67 @@ class _AccountProfilePageState extends State<AccountProfilePage> {
 
 void goToNextPage() {
   Get.to(MyHomePage()); // Sử dụng GetX để điều hướng tới NextPage()
+}
+
+void test() {
+  Get.dialog(
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Material(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Title Text",
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "Message Text",
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    //Buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            child: const Text(
+                              'NO',
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            child: const Text(
+                              'YES',
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

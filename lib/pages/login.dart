@@ -6,7 +6,8 @@ import 'package:demo/values/app_assets.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  final VoidCallback showRegisterPage;
+  LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text("Don't have an account? "),
                         TextButton(
                           onPressed: () {
-                            Get.to(() => RegisterPage());
+                            widget.showRegisterPage();
                           },
                           child: Text(
                             'Create',

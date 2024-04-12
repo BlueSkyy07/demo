@@ -36,4 +36,5 @@ class AppAssets {
   static final String next = iconPath + 'next.png';
   static final String phone1 = iconPath + 'phone1.png';
   static final String payment = iconPath + 'payment.png';
+  static final String search16x = iconPath + 'search16x.png';
 }

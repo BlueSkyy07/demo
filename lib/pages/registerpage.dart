@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo/pages/login.dart';
-import 'package:demo/pages/mainpage.dart';
+import 'package:demo/auth/mainpage.dart';
 import 'package:demo/values/app_assets.dart';
 import 'package:demo/widgets/textfieldlogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  final VoidCallback showLoginPage;
+  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -51,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
           builder: (context) => AlertDialog(
             title: Text("Error"),
             content: Text("Mật khẩu phải chứa ít nhất 8 ký tự!"),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -61,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
         );
-        return; // Kết thúc quá trình đăng ký nếu mật khẩu không đủ 8 ký tự
+        return;
       }
 
       // Kiểm tra email đã tồn tại trong cơ sở dữ liệu chưa
@@ -70,15 +69,14 @@ class _RegisterPageState extends State<RegisterPage> {
               .collection('users')
               .where('email', isEqualTo: email)
               .get();
-
       if (existingUsers.docs.isNotEmpty) {
-        print('Email đã tồn tại trong cơ sở dữ liệu!');
+        print('Email đã tồn tại!');
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text("Error"),
-            content: Text("Email đã tồn tại trong cơ sở dữ liệu!"),
-            actions: <Widget>[
+            content: Text("Email đã tồn tại!"),
+            actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -88,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
         );
-        return; // Kết thúc quá trình đăng ký nếu email đã tồn tại trong cơ sở dữ liệu
+        return;
       }
 
       // Nếu mật khẩu đủ 8 ký tự và email chưa tồn tại trong cơ sở dữ liệu, thực hiện đăng ký
@@ -103,23 +101,23 @@ class _RegisterPageState extends State<RegisterPage> {
       } else {
         print('Vui lòng điền đầy đủ thông tin!');
       }
-
-      Get.off(() => MainPage());
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Notification!!"),
-          content: Text("Thêm tài khoản thành công!"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Get.to(() => LoginPage());
-              },
-              child: Text("OK"),
-            ),
-          ],
-        ),
-      );
+      // Get.off(() => MainPage());
+      // showDialog(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     title: Text("Notification!!"),
+      //     content: Text("Thêm tài khoản thành công!"),
+      //     actions: [
+      //       TextButton(
+      //         onPressed: () {
+      //           Get.offAll(() => MainPage());
+      //           return;
+      //         },
+      //         child: Text("OK"),
+      //       ),
+      //     ],
+      //   ),
+      // );
     }
 
     return Scaffold(
@@ -210,13 +208,35 @@ class _RegisterPageState extends State<RegisterPage> {
                               ]),
                               borderRadius: BorderRadius.circular(24)),
                           child: InkWell(
-                            onTap: signUp,
+                            onTap: () {
+                              signUp();
+                              return;
+                            },
                             child: Image.asset(AppAssets.vector),
                           ),
                         )
                       ],
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'I am a member',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      GestureDetector(
+                        onTap: widget.showLoginPage,
+                        child: Text(
+                          ' Login now',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

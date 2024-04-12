@@ -1,6 +1,7 @@
 import 'package:demo/pages/account_page.dart';
 import 'package:demo/pages/cartpage.dart';
 import 'package:demo/pages/login.dart';
+import 'package:demo/pages/searchpage.dart';
 import 'package:demo/values/app_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
   Widget _account = AccountPage();
-  Widget _home = LoginPage();
+  Widget _home = SearchPage();
   Widget _cart = CartPage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

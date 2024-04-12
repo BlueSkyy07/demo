@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:demo/pages/account_page.dart';
 import 'package:demo/pages/login.dart';
-import 'package:demo/pages/mainpage.dart';
+import 'package:demo/auth/mainpage.dart';
 import 'package:demo/pages/myhomepage.dart';
 import 'package:demo/pages/accountprofile_page.dart';
 import 'package:demo/pages/registerpage.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: MainPage(),
     );
   }
 }
