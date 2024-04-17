@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
       String phone = _mobileController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
-
+      final _auth = FirebaseAuth.instance;
       // Kiểm tra mật khẩu có đủ 8 ký tự không
       if (password.length < 8) {
         print('Mật khẩu phải chứa ít nhất 8 ký tự!');
@@ -95,9 +95,13 @@ class _RegisterPageState extends State<RegisterPage> {
           email.isNotEmpty &&
           password.isNotEmpty) {
         await addUserToFirestore(fullname, phone, email);
-
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
+        final userCredential = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        final user = userCredential.user;
+        // await _auth.createUserWithEmailAndPassword(
+        //     email: email, password: password);
+        // update display name
+        await user!.updateDisplayName(fullname);
       } else {
         print('Vui lòng điền đầy đủ thông tin!');
       }

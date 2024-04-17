@@ -1,4 +1,5 @@
 import 'package:demo/auth/mainpage.dart';
+import 'package:demo/controller/controllerlogin.dart';
 import 'package:demo/pages/myhomepage.dart';
 import 'package:demo/values/app_assets.dart';
 import 'package:demo/widgets/attributeProfile.dart';
@@ -14,7 +15,10 @@ class AccountProfilePage extends StatefulWidget {
 }
 
 class _AccountProfilePageState extends State<AccountProfilePage> {
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
+  // int i = 1;
+  // final ControllerLogin user = Get.find();
+  final ControllerLogin user = Get.put(ControllerLogin());
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +52,30 @@ class _AccountProfilePageState extends State<AccountProfilePage> {
                   ),
                   Column(
                     children: [
+                      if (user.displayName.value != '') ...[
+                        Container(
+                          child: Text(
+                            user.displayName.value,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        )
+                      ] else ...[
+                        Container(
+                          child: Text(
+                            user.userEmail.value,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
                       Container(
                         child: Text(
-                          user.email!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                          "@livetroll",
                         ),
-                      ),
-                      Container(
-                        child: Text("@livetroll"),
                       ),
                     ],
                   )
