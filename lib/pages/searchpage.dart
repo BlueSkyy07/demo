@@ -51,7 +51,26 @@ class SearchPage extends StatelessWidget {
           )),
       body: Center(
         child: Column(
-          children: [Text('data')],
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Category"),
+                        InkWell(
+                          onTap: () {},
+                          child: Text("More Category"),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

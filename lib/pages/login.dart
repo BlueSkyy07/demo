@@ -1,9 +1,11 @@
+import 'package:demo/controller/controllerlogin.dart';
 import 'package:demo/pages/registerpage.dart';
 import 'package:demo/widgets/textfieldlogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:demo/values/app_assets.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -17,6 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final ControllerLogin showPass = Get.put(ControllerLogin());
+
   Future signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -24,9 +28,28 @@ class _LoginPageState extends State<LoginPage> {
           password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        // Get.defaultDialog(
+        //   title: "GeeksforGeeks",
+        //   middleText: "Hello world!",
+        //   backgroundColor: Colors.green,
+        //   titleStyle: TextStyle(color: Colors.white),
+        //   middleTextStyle: TextStyle(color: Colors.white),
+        // );
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Error"),
+            content: Text("Invalid email or password. Please try again."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Đóng dialog
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
       }
     }
   }
@@ -41,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    showPass.showPassword.value = false;
     return Scaffold(
       body: Stack(
         children: [
@@ -87,15 +111,33 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   buildTextFieldLogin(
-                      controller: _emailController,
-                      hintText: "Email",
-                      prefixIcon: Image.asset(AppAssets.email)),
+                    controller: _emailController,
+                    hintText: "Email",
+                    prefixIcon:
+                        Image.asset(AppAssets.email, height: 22, width: 26),
+                    suffixIcon: null,
+                  ),
                   SizedBox(height: 40),
-                  buildTextFieldLogin(
-                      controller: _passwordController,
-                      obscureText: true,
-                      hintText: "Password",
-                      prefixIcon: Image.asset(AppAssets.password)),
+                  Obx(() => buildTextFieldLogin(
+                        controller: _passwordController,
+                        obscureText: !showPass.showPassword.value,
+                        hintText: "Password",
+                        prefixIcon: Image.asset(
+                          AppAssets.password,
+                          height: 22,
+                          width: 26,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            showPass.showPassword.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            showPass.ShowTextPssword();
+                          },
+                        ),
+                      )),
                   SizedBox(height: 20),
                   Container(
                     height: 50,

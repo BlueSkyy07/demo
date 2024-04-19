@@ -5,7 +5,7 @@ class ControllerLogin extends GetxController {
   RxString userEmail = ''.obs;
   RxString displayName = ''.obs;
   RxString sex = 'nam'.obs;
-
+  RxBool showPassword = false.obs;
   void loginSuccess() {
     checkLogin.value = true;
     print("checkLogin is now: ${checkLogin.value}");
@@ -17,5 +17,10 @@ class ControllerLogin extends GetxController {
   void changeSex() {
     sex.value = 'nu';
     print("sex: ${sex.value}");
+  }
+
+  void ShowTextPssword() {
+    showPassword.value = !showPassword.value;
+    print("showPassword: ${showPassword.value}");
   }
 }

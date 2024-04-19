@@ -175,7 +175,7 @@ class _AccountProfilePageState extends State<AccountProfilePage> {
 }
 
 void goToNextPage() {
-  Get.to(MyHomePage()); // Sử dụng GetX để điều hướng tới NextPage()
+  Get.off(() => MyHomePage()); // Sử dụng GetX để điều hướng tới NextPage()
 }
 
 void test() {

@@ -21,6 +21,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final _passwordController = TextEditingController();
     final _emailController = TextEditingController();
     final _mobileController = TextEditingController();
+    Size sizeh = MediaQuery.of(context).size;
+    Size sizew = MediaQuery.of(context).size;
 
     Future<void> addUserToFirestore(
         String fullname, String phone, String email) async {
@@ -135,116 +137,130 @@ class _RegisterPageState extends State<RegisterPage> {
             bottom: 0,
             child: Image.asset(AppAssets.backgroundReg2),
           ),
-          Positioned(
-              top: 20,
-              child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Image.asset(AppAssets.vectorback))),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Container(
-                    child: Text(
-                      "Create account",
-                      style:
-                          TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+          // Positioned.fill(
+          //   top: 60,
+          //   child: Align(
+          //     alignment: Alignment.topCenter,
+          //     child: Container(
+          //       child: Text(
+          //         "Create account",
+          //         style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  buildTextFieldLogin(
-                      controller: _fullnameController,
-                      hintText: "Fullname",
-                      prefixIcon: Image.asset(AppAssets.profile)),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildTextFieldLogin(
-                      controller: _passwordController,
-                      obscureText: true,
-                      hintText: "Password",
-                      prefixIcon: Image.asset(AppAssets.password)),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildTextFieldLogin(
-                      controller: _emailController,
-                      hintText: "Email",
-                      prefixIcon: Image.asset(AppAssets.email)),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildTextFieldLogin(
-                      controller: _mobileController,
-                      hintText: "Mobile",
-                      prefixIcon: Image.asset(AppAssets.phone)),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    Container(
+                      child: Text(
+                        "Create account",
+                        style: TextStyle(
+                            fontSize: 27, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    buildTextFieldLogin(
+                        controller: _fullnameController,
+                        hintText: "Fullname",
+                        prefixIcon: Image.asset(AppAssets.profile),
+                        suffixIcon: null),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    buildTextFieldLogin(
+                        controller: _passwordController,
+                        obscureText: true,
+                        hintText: "Password",
+                        prefixIcon: Image.asset(AppAssets.password),
+                        suffixIcon: null),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    buildTextFieldLogin(
+                        controller: _emailController,
+                        hintText: "Email",
+                        prefixIcon: Image.asset(AppAssets.email),
+                        suffixIcon: null),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    buildTextFieldLogin(
+                        controller: _mobileController,
+                        hintText: "Mobile",
+                        prefixIcon: Image.asset(AppAssets.phone),
+                        suffixIcon: null),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Create',
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 34,
+                            width: 56,
+                            decoration: BoxDecoration(
+                                // color: const Color.fromRGBO(249, 119, 147, 5),
+                                gradient: LinearGradient(colors: [
+                                  Color(0xFFE45171),
+                                  Color.fromARGB(255, 148, 33, 224),
+                                ]),
+                                borderRadius: BorderRadius.circular(24)),
+                            child: InkWell(
+                              onTap: () {
+                                signUp();
+                                return;
+                              },
+                              child: Image.asset(AppAssets.vector),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create',
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                          'I\'m a member',
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: 34,
-                          width: 56,
-                          decoration: BoxDecoration(
-                              // color: const Color.fromRGBO(249, 119, 147, 5),
-                              gradient: LinearGradient(colors: [
-                                Color(0xFFE45171),
-                                Color.fromARGB(255, 148, 33, 224),
-                              ]),
-                              borderRadius: BorderRadius.circular(24)),
-                          child: InkWell(
-                            onTap: () {
-                              signUp();
-                              return;
-                            },
-                            child: Image.asset(AppAssets.vector),
+                        GestureDetector(
+                          onTap: widget.showLoginPage,
+                          child: Text(
+                            ' Login now',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         )
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'I am a member',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        onTap: widget.showLoginPage,
-                        child: Text(
-                          ' Login now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
