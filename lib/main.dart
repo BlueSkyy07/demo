@@ -6,6 +6,7 @@ import 'package:demo/auth/mainpage.dart';
 import 'package:demo/pages/myhomepage.dart';
 import 'package:demo/pages/accountprofile_page.dart';
 import 'package:demo/pages/registerpage.dart';
+import 'package:demo/pages/test.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: TestPage(),
     );
   }
 }
