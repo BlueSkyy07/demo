@@ -1,129 +1,102 @@
-import 'package:demo/values/app_assets.dart';
+import 'package:demo/controller/product_controller.dart';
+import 'package:demo/model/post.dart';
+import 'package:demo/model/post.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:demo/network/network_request.dart';
+import 'dart:convert';
 
 class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
+  TestPage({super.key});
 
   @override
   State<TestPage> createState() => _TestPageState();
 }
 
 class _TestPageState extends State<TestPage> {
+  final ProductController product = Get.put(ProductController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.black,
       body: Center(
         child: Column(
           children: [
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 200,
-              width: double.infinity,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Do something when the icon is tapped
-                        items[index].onTap();
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50, // Đặt kích thước hình tròn
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
+            // Expanded(
+            //   child: GridView.builder(
+            //     padding: EdgeInsets.all(10),
+            //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //         crossAxisCount: 2,
+            //         crossAxisSpacing: 4.0,
+            //         mainAxisSpacing: 4.0,
+            //         mainAxisExtent: 250),
+            //     shrinkWrap: true, // Thêm thuộc tính shrinkWrap
+            //     itemCount: postData.length,
+            //     itemBuilder: (context, index) {
+            //       return Card(
+            //         // padding: EdgeInsets.all(10),
+            //         child: Column(
+            //           children: [
+            //             ElevatedButton(onPressed: () {}, child: Text('click'))
+            //             // Image.network('${postData[index].image}'),
+            //             // Text('${postData[index].title}'),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // )
+            Expanded(
+                child: Obx(() => GridView.builder(
+                      itemCount: product.posts.length,
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisExtent: 300,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
                               border:
-                                  Border.all(width: 1, color: Colors.black26),
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     offset: Offset(2, 4),
-                              //     color: Colors.black12,
-                              //     blurRadius: 2,
-                              //   ),
-                              // ],
-                            ),
-                            child: Image.asset(
-                              items[index].icon,
-                              fit: BoxFit.scaleDown,
-                            ),
+                                  Border.all(width: 1, color: Colors.black38)),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 150,
+                                child: Image.network(
+                                  product.posts[index].image!,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 80,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 10),
+                                child: Text(
+                                  product.posts[index].title!,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                '${product.posts[index].price}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue.shade400),
+                              )
+                            ],
                           ),
-                          SizedBox(height: 8.0),
-                          Text(items[index].name),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        );
+                      },
+                    )))
           ],
         ),
       ),
     );
   }
 }
-
-class ListItem {
-  final String name;
-  final String icon;
-  VoidCallback onTap;
-  ListItem({required this.name, required this.icon, required this.onTap});
-}
-
-List<ListItem> items = [
-  ListItem(
-    name: 'Item 1',
-    icon: AppAssets.email,
-    onTap: () {},
-  ),
-  ListItem(
-      name: 'Item 2',
-      icon: AppAssets.detail,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 3',
-      icon: AppAssets.home,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 4',
-      icon: AppAssets.payment,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 5',
-      icon: AppAssets.payment,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 6',
-      icon: AppAssets.payment,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 7',
-      icon: AppAssets.payment,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-  ListItem(
-      name: 'Item 8',
-      icon: AppAssets.payment,
-      onTap: () {
-        print('Icon 2 tapped.');
-      }),
-];
