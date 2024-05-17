@@ -1,16 +1,25 @@
 import 'package:demo/controller/product_controller.dart';
 import 'package:demo/pages/productdetail_page.dart';
+import 'package:demo/pages/timkiem.dart';
 import 'package:demo/values/app_assets.dart';
+import 'package:demo/widgets/rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   SearchPage({super.key});
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   final ProductController product = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.black12,
       appBar: AppBar(
           actions: [
             // IconButton(
@@ -32,7 +41,9 @@ class SearchPage extends StatelessWidget {
             )
           ],
           title: InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.to(timkiem());
+            },
             child: Container(
               height: 35,
               decoration: BoxDecoration(
@@ -53,81 +64,96 @@ class SearchPage extends StatelessWidget {
               ),
             ),
           )),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Category"),
-                        InkWell(
-                          onTap: () {},
-                          child: Text("More Category"),
-                        )
-                      ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Category"),
+                          InkWell(
+                            onTap: () {},
+                            child: Text("More Category"),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-                child: Obx(() => GridView.builder(
-                      itemCount: product.posts.length,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 300,
-                          mainAxisSpacing: 2,
-                          crossAxisSpacing: 2),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.find<ProductController>()
-                                .setProduct(product.posts[index]);
-                            Get.to(ProductDetailPage());
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Colors.black38)),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 150,
-                                  child: Image.network(
-                                    product.posts[index].image!,
-                                    fit: BoxFit.fitWidth,
+              Expanded(
+                  child: Obx(() => GridView.builder(
+                        itemCount: product.posts.length,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 300,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.find<ProductController>()
+                                  .setProduct(product.posts[index]);
+                              Get.to(ProductDetailPage());
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  border: Border.all(
+                                      width: 1, color: Colors.black38)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 150,
+                                    child: Image.network(
+                                      product.posts[index].image!,
+                                      fit: BoxFit.fitWidth,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  height: 80,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 10),
-                                  child: Text(
-                                    product.posts[index].title!,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    height: 64,
+                                    child: Text(
+                                      product.posts[index].title!,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  '${product.posts[index].price}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade400),
-                                )
-                              ],
+                                  StarRating(
+                                    rating: product.posts[index].rating?.rate
+                                            ?.toDouble() ??
+                                        0.0,
+                                    size: 19,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      '\$${product.posts[index].price} ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue.shade400),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    )))
-          ],
+                          );
+                        },
+                      )))
+            ],
+          ),
         ),
       ),
     );
